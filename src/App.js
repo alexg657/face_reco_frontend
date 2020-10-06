@@ -5,7 +5,7 @@ import Logo from './components/Logo/Logo';
 import Rank from './components/Rank/Rank';
 import ImageLinkForm from './components/ImageLinkForm/ImageLinkForm';
 import Particles from 'react-particles-js';
-
+import Profile from './components/Profile/Profile'
 import FaceRecognition from './components/FaceRecognition/FaceRecognition';
 import SignIn from './components/SignIn/SignIn';
 import Register from './components/Register/Register';
@@ -35,6 +35,9 @@ const initialState = {
     joined: ''
   }
 }
+
+  const backend='https://face-reco-backend.herokuapp.com';
+
 class App extends React.Component {
 
 
@@ -94,7 +97,7 @@ class App extends React.Component {
 
   onPictureSubmit = () => {
     this.setState({ imgUrl: this.state.input });//setState rerender and FaceRecognition loads imgUrl to show img 
-    fetch('https://face-reco-backend.herokuapp.com/clarifai', {
+    fetch(`${backend}/clarifai`, {
       method: 'put',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
@@ -110,7 +113,7 @@ class App extends React.Component {
         console.log('api error')
       });
 
-    fetch('https://face-reco-backend.herokuapp.com/image', {
+    fetch(`${backend}/image`, {
       method: 'put',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
@@ -149,13 +152,14 @@ class App extends React.Component {
   render() {
 
     let return1;
-
+    
     if (this.state.route === 'SignIn') {
-      return1 = <SignIn loadUser={this.loadUser} onRouteChange={this.onRouteChange} />
-
+       return1 = <SignIn backend={backend} loadUser={this.loadUser} onRouteChange={this.onRouteChange} />
+      //return1=<Profile/>
     }
     if (this.state.route === 'Home') {
       return1 = <div>
+        
         <Logo />
         <Rank name={this.state.user.name} rank={this.state.user.entries} />
         <ImageLinkForm onInputChange={this.onInputChange} onPictureSubmit={this.onPictureSubmit} />
@@ -163,9 +167,11 @@ class App extends React.Component {
       </div>
     }
     if (this.state.route === 'Register') {
-      return1 = <Register loadUser={this.loadUser} onRouteChange={this.onRouteChange} />
+      return1 = <Register backend={backend} loadUser={this.loadUser} onRouteChange={this.onRouteChange} />
     }
-
+    if (this.state.route === 'Profile') {
+      return1 = <Profile backend={backend} loadUser={this.loadUser} name={`Edit ${this.state.user.name}'s Profile`} email={this.state.user.email} onRouteChange={this.onRouteChange}/>
+    }
     return (
       <div className="App">
         <Particles className='particles' params={particles_options} />

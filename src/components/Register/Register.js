@@ -21,7 +21,7 @@ class Register extends React.Component{
         this.setState({RegisterPassword:event.target.value})
     }
     onRegisterClick=()=>{
-        fetch('https://face-reco-backend.herokuapp.com/register',{
+        fetch(`${this.props.backend}/register`,{
             method:'post',
             headers:{'Content-Type':'application/json'},
             body: JSON.stringify({
