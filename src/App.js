@@ -35,8 +35,7 @@ const initialState = {
     joined: ''
   }
 }
-
-  const backend='https://face-reco-backend.herokuapp.com';
+const backend='https://face-reco-backend.herokuapp.com';
 
 class App extends React.Component {
 

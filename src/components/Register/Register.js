@@ -6,7 +6,8 @@ class Register extends React.Component{
         this.state={
             RegisterName:'',
             RegisterEmail:'',
-            RegisterPassword:''
+            RegisterPassword:'',
+            wrongCred:''
         }
     }
     onNameChange=(event)=>{
@@ -34,8 +35,16 @@ class Register extends React.Component{
         .then(user=>{ //getting the user via response
             if(user.id){
                 this.props.loadUser(user);
-                this.props.onRouteChange('Home');
+                this.setState({ wrongCred: 'Success' })
+                setTimeout(() => {
+                    this.props.onRouteChange('Home');
+                }, 2000);
+                
             }
+            else if(user==='something missing')
+                {
+                    this.setState({ wrongCred: 'Missing fields' })
+                }
         })
         
         
@@ -64,7 +73,9 @@ render(){
                     <div className="">
                         <input onClick={this.onRegisterClick} className="b ph3 pv2 input-reset ba b--black bg-transparent grow pointer f6 dib" type="submit" value="Register" />
                     </div>
-                    
+                    <div className="mt3">
+                    <label className="db fw6 lh-copy f5">{this.state.wrongCred}</label>
+                    </div>
                 </div>
             </main>
         </article>

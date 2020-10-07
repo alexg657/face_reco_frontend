@@ -1,3 +1,4 @@
+import { wait } from '@testing-library/react';
 import React from 'react';
 class Profile extends React.Component {
     constructor() {
@@ -5,11 +6,14 @@ class Profile extends React.Component {
         this.state = {
             Name: '',
             Password: '',
-            NewEmail: ''
+            NewEmail: '',
+            profileMsg: ''
+
         }
     }
     onNameChange = (event) => {
         this.setState({ Name: event.target.value })
+
 
     }
     onEmailChange = (event) => {
@@ -22,22 +26,31 @@ class Profile extends React.Component {
 
     }
     onUpdateClick = () => {
+
         fetch(`${this.props.backend}/profile`, {
-            method: 'post',
+            method: 'put',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({
                 name: this.state.Name,
                 email: this.props.email,
                 password: this.state.Password,
                 newemail: this.state.NewEmail,
-                getUpdate:true 
+                getUpdate: true,
+                getDelete: false
             })
         })
             .then(response => response.json())
             .then(user => { //getting the user via response
                 if (user.id) {
                     this.props.loadUser(user);
-                    this.props.onRouteChange('Home');
+                    this.setState({ profileMsg: 'Success' })
+
+                    setTimeout(() => {
+                        this.props.onRouteChange('Home');
+                    }, 2000);
+                }
+                else if (user === 'empty') {
+                    this.setState({ profileMsg: 'Empty fields nothing to update' })
                 }
             })
 
@@ -46,18 +59,24 @@ class Profile extends React.Component {
 
     onDeleteClick = () => {
         fetch(`${this.props.backend}/profile`, {
-            method: 'post',
+            method: 'put',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({         
+            body: JSON.stringify({
                 email: this.props.email,
-                getDelete:true
+                getDelete: true,
+                getUpdate: false
             })
         })
             .then(response => response.json())
             .then(deletion => { //getting the user via response
 
-                if (deletion==='success') {
-                    this.props.onRouteChange('SignIn');
+                if (deletion === 'success') {
+                    this.setState({ profileMsg: 'Account DELETED' })
+
+                    setTimeout(() => {
+                        this.props.onRouteChange('SignIn');
+                    }, 2000);
+
                 }
             })
 
@@ -85,13 +104,17 @@ class Profile extends React.Component {
                         <input onChange={this.onPasswordChange} className="b--black pa2 input-reset ba bw1 bg-transparent hover-bg-black hover-white w-100" type="password" name="password" id="password" />
                     </div>
                 </fieldset>
+
+
                 <div className="mt3">
                     <input onClick={this.onUpdateClick} className="fw6 b ph3 pv2 input-reset ba bw1 b--black bg-transparent grow pointer f6 ma3" type="submit" value="Update" />
                     <p className="fw6 f6 ba bw1 ph3 pv2 mb2 dib black pointer grow" onClick={() => this.props.onRouteChange('Home')}>Cancel</p>
-
                 </div>
+
+
+                <p className="f6 ph3 pv2 mb2 dib white bg-red pointer grow" onClick={this.onDeleteClick}>Delete Account</p>
                 <div className="mt3">
-                    <p className="f6 ph3 pv2 mb2 dib white bg-red pointer grow" onClick={this.onDeleteClick}>Delete Account</p>
+                    <label className="db fw6 lh-copy f4">{this.state.profileMsg}</label>
                 </div>
             </article>
 
