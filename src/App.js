@@ -24,7 +24,7 @@ const particles_options = {
 const initialState = {
   input: '',
   imgUrl: '',
-  box: {},
+  boxes: {},
   route: 'SignIn',
   isSignedIn: false,
   user: {
@@ -69,28 +69,27 @@ class App extends React.Component {
 
   calcBox = (data) => {
     const image = document.getElementById('inputImg');
-
     const width = image.width;
     const height = image.height;
 
+    const newObj={}
+    Object.entries(data).forEach(([key, value]) => {
+      const top_row = value.top_row * height;
 
-    const top_row = data.top_row * height;
+      const left_col = value.left_col * width;
+  
+      const bottom_row = height - (value.bottom_row * height);
+  
+      const right_col = width - (value.right_col * width);
+      
+      newObj[key]= Object.assign({'top_row': top_row, 'left_col': left_col, 'bottom_row': bottom_row, 'right_col': right_col})
 
-    const left_col = data.left_col * width;
-
-    const bottom_row = height - (data.bottom_row * height);
-
-    const right_col = width - (data.right_col * width);
-
-    //console.log(width, height);
-    //console.log(top_row, left_col, bottom_row, right_col);
+   });
+    
 
     this.setState({
-      box: {
-        top_row: top_row, left_col: left_col, bottom_row: bottom_row, right_col: right_col
-      }
+      boxes:Object.assign(newObj)
     });
-
 
   }
 
@@ -163,7 +162,7 @@ class App extends React.Component {
         <Logo name={logo}/>
         <Rank name={this.state.user.name} rank={this.state.user.entries} />
         <ImageLinkForm onInputChange={this.onInputChange} onPictureSubmit={this.onPictureSubmit} />
-        <FaceRecognition imgUrl={this.state.imgUrl} box={this.state.box} />
+        <FaceRecognition imgUrl={this.state.imgUrl} boxes={this.state.boxes} />
       </div>
     }
     if (this.state.route === 'Register') {
