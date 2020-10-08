@@ -157,9 +157,10 @@ class App extends React.Component {
       //return1=<Profile/>
     }
     if (this.state.route === 'Home') {
+      const logo=`https://api.adorable.io/avatars/285/${this.state.user.name}.png `;
+
       return1 = <div>
-        
-        <Logo />
+        <Logo name={logo}/>
         <Rank name={this.state.user.name} rank={this.state.user.entries} />
         <ImageLinkForm onInputChange={this.onInputChange} onPictureSubmit={this.onPictureSubmit} />
         <FaceRecognition imgUrl={this.state.imgUrl} box={this.state.box} />

@@ -6,5 +6,6 @@ REACT-TILT
 TACHYONS
 REACT-PARTICLES-JS
 SERVE
+Adorable Avatars API
 
 LIVE: https://face-reco-frontend.herokuapp.com/
