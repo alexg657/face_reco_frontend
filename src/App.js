@@ -41,6 +41,7 @@ const initialState = {
 
 const backend='https://face-reco-backend.herokuapp.com';
 
+
 class App extends React.Component {
 
   constructor() {
@@ -184,10 +185,9 @@ class App extends React.Component {
 
     }
     if (this.state.route === 'Home') {
-      const logo = `https://api.adorable.io/avatars/285/${this.state.user.name}.png `;
-
+      
       return1 = <div>
-        <Logo name={logo} />
+        <Logo backend={backend} email={this.state.user.email}/>
         <Rank name={this.state.user.name} rank={this.state.user.entries} />
         <ImageLinkForm onInputChange={this.onInputChange} onPictureSubmit={this.onPictureSubmit} />
         <FaceRecognition imgUrl={this.state.imgUrl} boxes={this.state.boxes} />
@@ -197,7 +197,7 @@ class App extends React.Component {
       return1 = <Register backend={backend} loadUser={this.loadUser} onRouteChange={this.onRouteChange} />
     }
     if (this.state.route === 'Profile') {
-      return1 = <Profile backend={backend} loadUser={this.loadUser} name={`Edit ${this.state.user.name}'s Profile`} email={this.state.user.email} onRouteChange={this.onRouteChange} />
+      return1 = <Profile backend={backend} loadUser={this.loadUser} name={`EDIT ${this.state.user.name}'s profile`} email={this.state.user.email} onRouteChange={this.onRouteChange} />
     }
 
     return (

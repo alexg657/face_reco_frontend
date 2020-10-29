@@ -1,5 +1,7 @@
 
 import React from 'react';
+import axios from 'axios';
+import ProgressBar from 'react-bootstrap/ProgressBar';
 class Profile extends React.Component {
     constructor() {
         super();
@@ -7,7 +9,9 @@ class Profile extends React.Component {
             Name: '',
             Password: '',
             NewEmail: '',
-            profileMsg: ''
+            profileMsg: '',
+            profileIMG: '',
+            progress:0
 
         }
     }
@@ -78,15 +82,56 @@ class Profile extends React.Component {
             })
     }
 
+    onFileChange = event => {
+
+        //console.log(event.target.files[0])
+        this.setState({ profileIMG: event.target.files[0] })
+    }
+    setProgess=(value)=>{
+        this.setState({progress:value})
+        console.log(value)
+    }
+    onFileSave = () => {
+        console.log(this.state.profileIMG)
+        
+        const formdata = new FormData()
+        formdata.append('email', this.props.email)
+        formdata.append('file', this.state.profileIMG)
+        
+
+        axios.post(`${this.props.backend}/filesupload`,
+        formdata,
+        {
+            onUploadProgress: (ProgressEvent) => {
+                let progress = Math.round(
+                ProgressEvent.loaded / ProgressEvent.total * 100);
+                this.setProgess(progress);
+        }})
+            .then(res => { 
+                console.log(res.data)
+                if(res.data==='OK'){
+                    this.setState({ profileMsg: 'Picture updated' })
+                    setTimeout(() => {
+                        this.props.onRouteChange('Home');
+                    }, 2000);
+                }
+                else if(res.data==='err'){
+                    this.setState({ profileMsg: 'NO picture updated' })
+                    this.setState({progress:0});
+                }
+
+            })
+
+    }
 
 
     render() {
         return (
+
             <article className="center mw5 mw6-ns hidden ba bw2 mv4">
                 <h1 className="f4 bg-near-black white mv0 pv2 ph3">{this.props.name}</h1>
 
                 <fieldset id="sign_up" className="ba b--transparent ph0 mh0 tl">
-
                     <div className="mt3">
                         <label className="db fw6 lh-copy f6" htmlFor="name">Name</label>
                         <input onChange={this.onNameChange} className="b--black pa2 input-reset ba bw1 bg-transparent hover-bg-black hover-white w-100" type="text" id="name" />
@@ -103,15 +148,24 @@ class Profile extends React.Component {
 
                 <div className="mt3">
                     <input onClick={this.onUpdateClick} className="fw6 b ph3 pv2 input-reset ba bw1 b--black bg-transparent grow pointer f6 ma3" type="submit" value="Update" />
-                    <p className="fw6 f6 ba bw1 ph3 pv2 mb2 dib black pointer grow" onClick={() => this.props.onRouteChange('Home')}>Cancel</p>
+                    <p className="fw6 f6 ba bw1 ph3 pv2 mb2 dib black pointer grow" onClick={() => this.props.onRouteChange('Home')}>Back</p>
                 </div>
 
-                <p className="f6 ph3 pv2 mb2 dib white bg-red pointer grow" onClick={this.onDeleteClick}>Delete Account</p>
                 <div className="mt3">
                     <label className="db fw6 lh-copy f4">{this.state.profileMsg}</label>
                 </div>
-            </article>
+                <h1 className="f4 bg-near-black white mv3 pv1 ph3">Profile picture</h1>
+                <input type="file" name="file" onChange={this.onFileChange} />
+                <p className="f6 ph3 pv2 mb2 dib white bg-green pointer grow" onClick={this.onFileSave}>Update</p>
+                <ProgressBar now={this.state.progress} />
+                <h1 className="f4 bg-near-black white mv3 pv1 ph3">Danger zone</h1>
+                <p className="f6 ph3 pv2 mb2 dib white bg-red pointer grow" onClick={this.onDeleteClick}>DELETE Account</p>
 
+            </article>
+          
+            
+            
+           
         )
     }
 }
