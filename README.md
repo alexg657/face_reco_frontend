@@ -1,21 +1,20 @@
 # face_reco_frontend
 The frontend part of the face recognition project.
+
 Powered by...
 
-REACT
+REACT JS
 
-REACT-TILT
+REACT-TILT NPM PACKAGE
 
-TACHYONS
+TACHYONS NPM PACKAGE
 
-REACT-PARTICLES-JS
+REACT-PARTICLES-JS NPM PACKAGE
 
-SERVE
+SERVE NPM PACKAGE
 
-Adorable Avatars API
+AXIOS NPM PACKAGE
 
-AXIOS
-
-React Bootstrap
+react-bootstrap NPM PACKAGE
 
 LIVE: https://face-reco-frontend.herokuapp.com/
