@@ -7,5 +7,8 @@ TACHYONS
 REACT-PARTICLES-JS
 SERVE
 Adorable Avatars API
+AXIOS
+React Bootstrap
+
 
 LIVE: https://face-reco-frontend.herokuapp.com/
