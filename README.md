@@ -1,6 +1,8 @@
 # face_reco_frontend
 The frontend part of the face recognition project.
 Powered by...
+
+
 REACT
 
 
@@ -23,6 +25,7 @@ AXIOS
 
 
 React Bootstrap
+
 
 
 LIVE: https://face-reco-frontend.herokuapp.com/
