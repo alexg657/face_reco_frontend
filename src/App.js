@@ -40,7 +40,7 @@ const initialState = {
 }
 
 const backend='https://face-reco-backend.herokuapp.com';
-// const backend = '//localhost:3001';
+
 
 class App extends React.Component {
 

@@ -1,4 +1,3 @@
-
 import React from 'react';
 import axios from 'axios';
 import ProgressBar from 'react-bootstrap/ProgressBar';
@@ -12,7 +11,6 @@ class Profile extends React.Component {
             profileMsg: '',
             profileIMG: '',
             progress:0
-
         }
     }
     onNameChange = (event) => {
@@ -58,7 +56,6 @@ class Profile extends React.Component {
                 }
             })
     }
-
     onDeleteClick = () => {
         fetch(`${this.props.backend}/profile`, {
             method: 'put',
@@ -71,7 +68,6 @@ class Profile extends React.Component {
         })
             .then(response => response.json())
             .then(deletion => { //getting the user via response
-
                 if (deletion === 'success') {
                     this.setState({ profileMsg: 'Account DELETED' })
 
@@ -87,8 +83,7 @@ class Profile extends React.Component {
         reader.readAsDataURL(file);
         reader.onload = () => {
             
-            this.setState({ profileIMG: reader.result});
-            
+            this.setState({ profileIMG: reader.result});        
         };
         reader.onerror = (error) => {
 
@@ -106,15 +101,9 @@ class Profile extends React.Component {
     }
     setProgess=(value)=>{
         this.setState({progress:value})
-        console.log(value)
+        
     }
     onFileSave = () => {
-
-        
-      
-        
-        
-        
 
         axios.post(`${this.props.backend}/filesupload`,
         {
@@ -128,7 +117,7 @@ class Profile extends React.Component {
                 this.setProgess(progress);
         }})
             .then(res => { 
-                console.log(res.data)
+                
                 if(res.data==='OK'){
                     this.setState({ profileMsg: 'Picture updated' })
                     setTimeout(() => {
@@ -139,9 +128,7 @@ class Profile extends React.Component {
                     this.setState({ profileMsg: 'NO picture updated' })
                     this.setState({progress:0});
                 }
-
             })
-
     }
 
 
@@ -182,10 +169,7 @@ class Profile extends React.Component {
                 <p className="f6 ph3 pv2 mb2 dib white bg-red pointer grow" onClick={this.onDeleteClick}>DELETE Account</p>
 
             </article>
-          
-            
-            
-           
+
         )
     }
 }
