@@ -82,25 +82,45 @@ class Profile extends React.Component {
             })
     }
 
+    getBase64(file) {
+        var reader = new FileReader();
+        reader.readAsDataURL(file);
+        reader.onload = () => {
+            
+            this.setState({ profileIMG: reader.result});
+            
+        };
+        reader.onerror = (error) => {
+
+            this.setState({ profileIMG: 'err'});
+        };
+     }
+
     onFileChange = event => {
 
-        //console.log(event.target.files[0])
-        this.setState({ profileIMG: event.target.files[0] })
+        if(event.target.files.length>0)
+        {
+            this.getBase64(event.target.files[0])
+        }
+        
     }
     setProgess=(value)=>{
         this.setState({progress:value})
         console.log(value)
     }
     onFileSave = () => {
-        console.log(this.state.profileIMG)
+
         
-        const formdata = new FormData()
-        formdata.append('email', this.props.email)
-        formdata.append('file', this.state.profileIMG)
+      
+        
+        
         
 
         axios.post(`${this.props.backend}/filesupload`,
-        formdata,
+        {
+            base64:this.state.profileIMG,
+            email:this.props.email
+        },
         {
             onUploadProgress: (ProgressEvent) => {
                 let progress = Math.round(
